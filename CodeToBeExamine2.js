@@ -1,108 +1,71 @@
-// Data Class (just holds data, no behavior)
+// A poorly designed "Data Class" with no behavior
 class UserData {
-    constructor(name, age, email, address, phone, isAdmin) {
+    constructor(name, age, email, address, phone, isAdmin, lastLogin, loginCount) {
         this.name = name;
         this.age = age;
         this.email = email;
         this.address = address;
         this.phone = phone;
         this.isAdmin = isAdmin;
+        this.lastLogin = lastLogin;
+        this.loginCount = loginCount;
     }
 }
 
-// Lazy Class (does almost nothing)
+// A "Lazy Class" that does almost nothing
 class Logger {
     log(message) {
         console.log(message);
     }
 }
 
-// Temporary Field (fields only used in specific cases)
-class OrderProcessor {
-    constructor() {
-        this.temporaryDiscount = 0; // Only used in applyDiscount
-        this.temporaryTaxRate = 0; // Only used in calculateTax
-    }
-
-    processOrder(order, user, discount, taxRate, shippingCost, isInternational) {
-        this.temporaryDiscount = discount;
-        this.temporaryTaxRate = taxRate;
-
-        let total = this.calculateTotal(order);
-        total = this.applyDiscount(total);
-        total = this.calculateTax(total);
-        total = this.addShippingCost(total, shippingCost, isInternational);
-
-        return total;
-    }
-
-    calculateTotal(order) {
-        return order.items.reduce((sum, item) => sum + item.price, 0);
-    }
-
-    applyDiscount(total) {
-        return total - this.temporaryDiscount; // Temporary Field used here
-    }
-
-    calculateTax(total) {
-        return total + (total * this.temporaryTaxRate); // Temporary Field used here
-    }
-
-    addShippingCost(total, shippingCost, isInternational) {
-        if (isInternational) {
-            return total + shippingCost * 2; // Duplicate Code (same logic as below)
-        }
-        return total + shippingCost; // Duplicate Code (same logic as above)
+// A class with "Feature Envy" - it excessively uses another class's data
+class UserReport {
+    generateReport(userData) {
+        let report = `Report for ${userData.name}:\n`;
+        report += `Age: ${userData.age}\n`;
+        report += `Email: ${userData.email}\n`;
+        report += `Address: ${userData.address}\n`;
+        report += `Phone: ${userData.phone}\n`;
+        report += `Last Login: ${userData.lastLogin}\n`;
+        report += `Login Count: ${userData.loginCount}\n`;
+        return report;
     }
 }
 
-// Long Parameter List
-function createUserProfile(name, age, email, address, phone, isAdmin, isVerified, joinDate, lastLogin, preferences) {
-    const user = new UserData(name, age, email, address, phone, isAdmin);
-    const profile = {
-        user,
-        isVerified,
-        joinDate,
-        lastLogin,
-        preferences
-    };
-    return profile;
-}
+// A function with a "Long Parameter List"
+function processUserData(name, age, email, address, phone, isAdmin, lastLogin, loginCount, logger) {
+    // "Temporary Field" - storing data temporarily
+    let tempUser = new UserData(name, age, email, address, phone, isAdmin, lastLogin, loginCount);
 
-// Shotgun Surgery (changes in one place require changes in many others)
-function updateUserProfile(profile, newName, newEmail, newAddress, newPhone) {
-    profile.user.name = newName;
-    profile.user.email = newEmail;
-    profile.user.address = newAddress;
-    profile.user.phone = newPhone;
+    // "Shotgun Surgery" - modifying multiple classes in one function
+    let reportGenerator = new UserReport();
+    let report = reportGenerator.generateReport(tempUser);
 
-    // Dead Code (this code is never used)
+    // "Duplicate Code" - logging the same message twice
+    logger.log(report);
+    logger.log(report);
+
+    // "Dead Code" - this block will never execute
     if (false) {
         console.log("This will never run.");
     }
+
+    return report;
 }
 
-// Duplicate Code
-function calculateShippingCost(order, isInternational) {
-    const baseCost = 10;
-    if (isInternational) {
-        return baseCost * 2; // Duplicate logic
-    }
-    return baseCost; // Duplicate logic
-}
+// Example usage
+let logger = new Logger();
+let userData = processUserData(
+    "John Doe", // name
+    30, // age
+    "john.doe@example.com", // email
+    "123 Main St", // address
+    "555-1234", // phone
+    false, // isAdmin
+    "2023-10-01", // lastLogin
+    5, // loginCount
+    logger // logger
+);
 
-// Dead Code (unused function)
-function unusedFunction() {
-    console.log("This function is never called.");
-}
-
-// Example usage (with even more code smells)
-const order = { items: [{ name: "Book", price: 20 }, { name: "Pen", price: 5 }] };
-const user = new UserData("John Doe", 30, "john@example.com", "123 Main St", "555-1234", false);
-const processor = new OrderProcessor();
-const total = processor.processOrder(order, user, 5, 0.1, 10, true);
-console.log("Total:", total);
-
-const profile = createUserProfile("Jane Doe", 25, "jane@example.com", "456 Elm St", "555-5678", false, true, "2023-01-01", "2023-10-01", { theme: "dark" });
-updateUserProfile(profile, "Jane Smith", "jane.smith@example.com", "789 Oak St", "555-8765");
-console.log("Updated Profile:", profile);
+console.log(userData);
