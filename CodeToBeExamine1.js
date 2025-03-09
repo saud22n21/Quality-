@@ -1,5 +1,5 @@
 class UserData {
-    constructor(name, age, email, address, phoneNumber) { // Long Parameter List
+    constructor(name, age, email, address, phoneNumber) {
         this.name = name;
         this.age = age;
         this.email = email;
@@ -36,7 +36,7 @@ function validateUserInput(name, age, email, address, phoneNumber) { // Long Par
     return true;
 }
 
-// Duplicate Code - Same validation logic copied
+// Same validation logic copied
 function validateUserData(user) {
     if (!user.name || !user.age || !user.email || !user.address || !user.phoneNumber) {
         return false;
@@ -44,7 +44,6 @@ function validateUserData(user) {
     return true;
 }
 
-// Dead Code - This function is never used
 function unusedFunction() {
     console.log("This function is never used.");
 }
@@ -59,7 +58,6 @@ class Order {
     }
 }
 
-// Shotgun Surgery - If email logic changes, multiple places must be updated
 function sendEmailToUser(user) {
     console.log(`Sending welcome email to ${user.email}`);
 }
@@ -68,13 +66,11 @@ function notifyUser(user) {
     console.log(`Sending notification email to ${user.email}`);
 }
 
-// Shotgun Surgery - This logic is scattered
 function updateUserEmail(user, newEmail) {
     user.email = newEmail;
     console.log(`Email updated for user ${user.name} to ${user.email}`);
 }
 
-// Dead Code - Unused variable
 let unusedVariable = 42;
 
 const user1 = new UserData("John", 25, "john@example.com", "123 Street", "555-1234");

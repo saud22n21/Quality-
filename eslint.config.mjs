@@ -6,6 +6,14 @@ export default [
     ignores: ["node_modules/**"],
   },
   {
+    plugins: {
+      // Define the custom plugin
+      "eslint-custom-rules": {
+        rules: {
+          "feature-envy": featureEnvyRule, // Register the custom rule
+        },
+      },
+    },
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",
@@ -23,7 +31,8 @@ export default [
           message: "Do not use eval().",
         },
       ],
-      "custom-rules/feature-envy": featureEnvyRule, // Include the custom rule
+      // Reference the custom rule with the correct plugin name
+      "eslint-custom-rules/feature-envy": ["warn"], // Add severity level here
     },
   },
 ];

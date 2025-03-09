@@ -12,14 +12,18 @@ class UserData {
     }
 }
 
-// A "Lazy Class" that does almost nothing
 class Logger {
     log(message) {
         console.log(message);
     }
 }
 
-// A class with "Feature Envy" - it excessively uses another class's data
+class DebugLogger {
+    debug(message) {
+        console.log(`DEBUG: ${message}`);
+    }
+}
+
 class UserReport {
     generateReport(userData) {
         let report = `Report for ${userData.name}:\n`;
@@ -33,22 +37,63 @@ class UserReport {
     }
 }
 
-// A function with a "Long Parameter List"
+class Payment {
+    constructor(amount, currency, paymentMethod) {
+        this.amount = amount;
+        this.currency = currency;
+        this.paymentMethod = paymentMethod;
+    }
+
+    processPayment() {
+        console.log(`Processing payment of ${this.amount} ${this.currency} via ${this.paymentMethod}`);
+    }
+}
+
+class UserManager {
+    constructor(userData) {
+        this.userData = userData;
+    }
+
+    getUserReport() {
+        let reportGenerator = new UserReport();
+        return reportGenerator.generateReport(this.userData);
+    }
+}
+
+// A class accessing internal details of another class
+class UserAnalytics {
+    constructor(userData) {
+        this.userData = userData;
+    }
+
+    analyze() {
+        if (this.userData.loginCount > 10) {
+            console.log("User is very active!");
+        } else {
+            console.log("User is not very active.");
+        }
+    }
+}
+
+
 function processUserData(name, age, email, address, phone, isAdmin, lastLogin, loginCount, logger) {
-    // "Temporary Field" - storing data temporarily
+    // storing data temporarily
     let tempUser = new UserData(name, age, email, address, phone, isAdmin, lastLogin, loginCount);
 
-    // "Shotgun Surgery" - modifying multiple classes in one function
+    // modifying multiple classes in one function
     let reportGenerator = new UserReport();
     let report = reportGenerator.generateReport(tempUser);
 
-    // "Duplicate Code" - logging the same message twice
+    // logging the same message twice
     logger.log(report);
     logger.log(report);
 
-    // "Dead Code" - this block will never execute
     if (false) {
         console.log("This will never run.");
+    }
+
+    function unusedFunction() {
+        console.log("This function is never used.");
     }
 
     return report;
@@ -69,3 +114,12 @@ let userData = processUserData(
 );
 
 console.log(userData);
+
+let payment = new Payment(100, "USD", "Credit Card");
+payment.processPayment();
+
+let userManager = new UserManager(userData);
+console.log(userManager.getUserReport());
+
+let userAnalytics = new UserAnalytics(userData);
+userAnalytics.analyze();
